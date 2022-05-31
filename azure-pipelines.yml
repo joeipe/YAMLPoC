@@ -11,4 +11,4 @@ pool:
 
 steps:
 - script: dotnet build
-  displayName: 'dotnet build'
+  displayName: 'dotnet build test'
