@@ -3,6 +3,12 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+variables:
+- name: BuildParameters.RestoreBuildProjects
+  value: '**/*.csproj'
+- name: BuildParameters.TestProjects
+  value: '**/*[Tt]ests/*.csproj'
+
 trigger:
 - master
 
@@ -10,19 +16,37 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: pwd
-  displayName: 'what directory are we in'
+- task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: 'restore'
+    projects: $(BuildParameters.RestoreBuildProjects)
 
-- script: ls -la
-  displayName: 'what file are in the folder'
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    command: 'build'
+    projects: $(BuildParameters.RestoreBuildProjects)
 
-- script: dotnet build
-  displayName: 'dotnet build'
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: 'test'
+    projects: $(BuildParameters.TestProjects)
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    projects: $(BuildParameters.RestoreBuildProjects)
+    zipAfterPublish: True
 
 - script: dotnet publish -o $(Build.ArtifactStagingDirectory)
   displayName: 'dotnet publish -o $(Build.ArtifactStagingDirectory)'
 
 - task: PublishPipelineArtifact@1
+  displayName: Publish Artifact
   inputs:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'drop'
