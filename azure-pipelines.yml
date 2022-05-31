@@ -13,10 +13,8 @@ steps:
 - script: pwd
   displayName: 'what directory are we in'
 
-steps:
 - script: ls -la
   displayName: 'what file are in the folder'
 
-steps:
 - script: dotnet build
   displayName: 'dotnet build'
