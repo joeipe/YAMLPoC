@@ -18,3 +18,12 @@ steps:
 
 - script: dotnet build
   displayName: 'dotnet build'
+
+- script: dotnet publish -o $(Build.ArtifactStagingDirectory)
+  displayName: 'dotnet publish -o $(Build.ArtifactStagingDirectory)'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
