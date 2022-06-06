@@ -13,7 +13,7 @@ steps:
 - script: dotnet build
   displayName: 'Build'
 
-- script: dotnet publish -o $(Build.artifactStagingDirectory)
+- script: dotnet publish -o $(build.artifactStagingDirectory)
   displayName: 'Publish'
 
 - task: PublishPipelineArtifact@1
