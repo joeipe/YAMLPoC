@@ -9,17 +9,21 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: dotnet build
-  displayName: 'Build'
+stages:
+- stage: build
+  jobs:
+    - job: build
+      steps:
+      - script: dotnet build
+        displayName: 'Build'
 
-- script: dotnet publish -o $(build.artifactStagingDirectory)
-  displayName: 'Publish'
+      - script: dotnet publish -o $(build.artifactStagingDirectory)
+        displayName: 'Publish'
 
-- task: PublishPipelineArtifact@1
-  displayName: Publish Artifact
-  inputs:
-    # targetPath: '$(Pipeline.Workspace)'
-    targetPath: '$(build.artifactstagingdirectory)'
-    artifact: 'drop'
-    publishLocation: 'pipeline'
+      - task: PublishPipelineArtifact@1
+        displayName: Publish Artifact
+        inputs:
+          # targetPath: '$(Pipeline.Workspace)'
+          targetPath: '$(build.artifactstagingdirectory)'
+          artifact: 'drop'
+          publishLocation: 'pipeline'
