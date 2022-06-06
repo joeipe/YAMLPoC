@@ -27,3 +27,14 @@ stages:
           targetPath: '$(build.artifactstagingdirectory)'
           artifact: 'drop'
           publishLocation: 'pipeline'
+
+- stage: deploy_to_test
+  jobs:
+    - job: deployToAppService
+      displayName: 'DeployToAppService - Test'
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
