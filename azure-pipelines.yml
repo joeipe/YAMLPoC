@@ -49,7 +49,7 @@ stages:
         PathtoPublish: $(build.artifactstagingdirectory)
         TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
     
-    - script: echo $variables['Build.SourceBranch']
+    - script: echo "$variables['Build.SourceBranch']"
       displayName: 'SourceBranch'
 
 
