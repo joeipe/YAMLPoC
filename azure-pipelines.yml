@@ -67,7 +67,7 @@ stages:
           appSettings: '-ASPNETCORE_ENVIRONMENT "Test"'
           deploymentMethod: 'auto'
 
-- stage: wait_for_approval
+- stage: wait_for_uat_approval
   pool: server
   jobs:
     - job: waitForApproval
@@ -89,7 +89,7 @@ stages:
       - script: echo Hello
         displayName: 'Hello test'
 
-- stage: wait_for_approval
+- stage: wait_for_prod_approval
   pool: server
   jobs:
     - job: waitForApproval
