@@ -66,3 +66,21 @@ stages:
           package: '$(Pipeline.Workspace)/**/*.zip'
           appSettings: '-ApiSettings "Test YAML"'
           deploymentMethod: 'auto'
+
+- stage: deploy_to_prod
+  jobs:
+    - job: deployToAppService
+      displayName: 'DeployToAppService - Prod'
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(2)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          appType: 'webApp'
+          appName: 'yamlpocapi'
+          package: '$(Pipeline.Workspace)/**/*.zip'
+          deploymentMethod: 'auto'
