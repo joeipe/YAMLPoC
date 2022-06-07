@@ -70,7 +70,7 @@ stages:
 - stage: wait_for_approval
   pool: server
   jobs:
-    - job: waitFoeApproval
+    - job: waitForApproval
       displayName: 'Wait for Approval'
       timeoutInMinutes: 4320
       steps:
@@ -79,6 +79,39 @@ stages:
         inputs:
           notifyUsers: 'joe.ipe@hotmail.com'
           instructions: 'Please validate the test end deployment'
+          onTimeout: reject
+
+- stage: deploy_to_uat
+  jobs:
+    - job: deployToAppService
+      displayName: 'DeployToAppService - UAT'
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(3)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          appType: 'webApp'
+          appName: 'yamlpocapi-uat'
+          package: '$(Pipeline.Workspace)/**/*.zip'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "UAT"'
+          deploymentMethod: 'auto'
+
+- stage: wait_for_approval
+  pool: server
+  jobs:
+    - job: waitForApproval
+      displayName: 'Wait for Approval'
+      timeoutInMinutes: 4320
+      steps:
+      - task: ManualValidation@0
+        timeoutInMinutes: 1440
+        inputs:
+          notifyUsers: 'joe.ipe@hotmail.com'
+          instructions: 'Please validate the uat end deployment'
           onTimeout: reject
 
 - stage: deploy_to_prod
