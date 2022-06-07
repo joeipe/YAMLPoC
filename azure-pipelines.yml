@@ -14,7 +14,7 @@ stages:
   - job: Job_1
     displayName: Agent job 1
     pool:
-      vmImage: ubuntu-20.04
+      vmImage: ubuntu-latest
     steps:
     - checkout: self
     - task: DotNetCoreCLI@2
@@ -58,10 +58,6 @@ stages:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)'
-      - script: pwd
-        displayName: 'Directory In'
-      - script: ls -la
-        displayName: 'Folder In'
       - task: AzureWebApp@1
         inputs:
           azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
