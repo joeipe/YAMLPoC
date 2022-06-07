@@ -58,11 +58,3 @@ stages:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)'
-      - task: AzureWebApp@1
-        inputs:
-          azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
-          appType: 'webApp'
-          appName: 'yamlpocapi-test'
-          package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-          appSettings: '-ApiSettings "Test YAML"'
-          deploymentMethod: 'auto'
