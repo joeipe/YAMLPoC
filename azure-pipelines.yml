@@ -64,7 +64,7 @@ stages:
           appType: 'webApp'
           appName: 'yamlpocapi-test'
           package: '$(Pipeline.Workspace)/**/*.zip'
-          appSettings: '-ApiSettings "Test YAML"'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "Test"'
           deploymentMethod: 'auto'
 
 - stage: wait_for_approval
@@ -97,4 +97,5 @@ stages:
           appType: 'webApp'
           appName: 'yamlpocapi'
           package: '$(Pipeline.Workspace)/**/*.zip'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "Production"'
           deploymentMethod: 'auto'
