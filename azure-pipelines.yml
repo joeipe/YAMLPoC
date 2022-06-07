@@ -18,7 +18,6 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
-    - script: echo "name is $(Build.SourceBranchName)"
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
@@ -120,7 +119,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_prod
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Prod'
