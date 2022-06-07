@@ -18,7 +18,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
-    - script: echo "name is $(Build.SourceBranch)"
+    - script: echo "name is $(Build.SourceBranchName)"
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
