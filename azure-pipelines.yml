@@ -61,7 +61,7 @@ stages:
       - script: pwd
         displayName: 'Directory In'
       - script: ls -la
-        displayName: 'Directory In'
+        displayName: 'Folder In'
       - task: AzureWebApp@1
         inputs:
           azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
