@@ -54,7 +54,7 @@ stages:
 
 
 - stage: deploy_to_test
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Test'
@@ -74,7 +74,7 @@ stages:
           deploymentMethod: 'auto'
 
 - stage: wait_for_uat_approval
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
   pool: server
   jobs:
     - job: waitForApproval
@@ -89,7 +89,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_uat
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - UAT'
@@ -123,7 +123,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_prod
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Prod'
