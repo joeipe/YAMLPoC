@@ -86,8 +86,19 @@ stages:
     - job: deployToAppService
       displayName: 'DeployToAppService - UAT'
       steps:
-      - script: echo Hello
-        displayName: 'Hello test'
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          appType: 'webApp'
+          appName: 'yamlpocapi-uat'
+          package: '$(Pipeline.Workspace)/**/*.zip'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "UAT"'
+          deploymentMethod: 'auto'
 
 - stage: wait_for_prod_approval
   pool: server
