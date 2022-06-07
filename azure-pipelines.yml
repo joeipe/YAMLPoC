@@ -48,10 +48,6 @@ stages:
       inputs:
         PathtoPublish: $(build.artifactstagingdirectory)
         TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
-    
-    - script: echo "$variables['Build.SourceBranch']"
-      displayName: 'SourceBranch'
-
 
 - stage: deploy_to_test
   condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
