@@ -47,8 +47,7 @@ namespace YAMLPoC.API.Controllers
             var list = new List<string>
             {
                 _config["ApiSettings"],
-                "vault",
-                "test"
+                "vault"
             };
 
             return Ok(list);
