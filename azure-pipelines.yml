@@ -22,7 +22,7 @@ stages:
     - script: echo "name is variables['Build.SourceBranchName']"
 
 - stage: Condition
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
   jobs:
   - job: Job_1
     displayName: Agent job 1
