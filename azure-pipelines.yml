@@ -50,7 +50,7 @@ stages:
         TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
 
 - stage: deploy_to_test
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Test'
@@ -67,4 +67,74 @@ stages:
           appName: 'yamlpocapi-test'
           package: '$(Pipeline.Workspace)/**/*.zip'
           appSettings: '-ASPNETCORE_ENVIRONMENT "Test"'
+          deploymentMethod: 'auto'
+
+- stage: wait_for_uat_approval
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  pool: server
+  jobs:
+    - job: waitForApproval
+      displayName: 'Wait for Approval'
+      timeoutInMinutes: 4320
+      steps:
+      - task: ManualValidation@0
+        timeoutInMinutes: 1440
+        inputs:
+          notifyUsers: 'joe.ipe@hotmail.com'
+          instructions: 'Please validate the test end deployment'
+          onTimeout: reject
+
+- stage: deploy_to_uat
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  jobs:
+    - job: deployToAppService
+      displayName: 'DeployToAppService - UAT'
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          appType: 'webApp'
+          appName: 'yamlpocapi-uat'
+          package: '$(Pipeline.Workspace)/**/*.zip'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "UAT"'
+          deploymentMethod: 'auto'
+
+- stage: wait_for_prod_approval
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  pool: server
+  jobs:
+    - job: waitForApproval
+      displayName: 'Wait for Approval'
+      timeoutInMinutes: 4320
+      steps:
+      - task: ManualValidation@0
+        timeoutInMinutes: 1440
+        inputs:
+          notifyUsers: 'joe.ipe@hotmail.com'
+          instructions: 'Please validate the uat end deployment'
+          onTimeout: reject
+
+- stage: deploy_to_prod
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
+  jobs:
+    - job: deployToAppService
+      displayName: 'DeployToAppService - Prod'
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(2)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          appType: 'webApp'
+          appName: 'yamlpocapi'
+          package: '$(Pipeline.Workspace)/**/*.zip'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "Production"'
           deploymentMethod: 'auto'
