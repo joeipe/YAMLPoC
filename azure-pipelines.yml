@@ -71,7 +71,7 @@ stages:
           deploymentMethod: 'auto'
 
 - stage: wait_for_uat_approval
-  condition: and(always(), eq(variables['Build.SourceBranchName'], 'releases/*'))
+  condition: and(always(), startsWith(variables['Build.SourceBranchName'], 'release/'))
   pool: server
   jobs:
     - job: waitForApproval
@@ -86,7 +86,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_uat
-  condition: and(always(), eq(variables['Build.SourceBranchName'], 'releases/*'))
+  condition: and(always(), startsWith(variables['Build.SourceBranchName'], 'release/'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - UAT'
