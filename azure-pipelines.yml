@@ -17,7 +17,7 @@ stages:
       displayName: 'DeployToAppService - Prod'
       steps:
       - bash: |
-          echo "$(Build.SourceBranchName)"
+          echo "$(Build.SourceBranch)"
 
 - stage: build
   jobs:
