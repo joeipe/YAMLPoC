@@ -7,8 +7,8 @@ trigger:
   branches:
     include:
     - refs/heads/master
-    - development
-    - releases/*
+    - refs/heads/develop
+    - refs/heads/release/*
 name: $(date:yyyyMMdd)$(rev:.r)
 stages:
 - stage: build
@@ -51,7 +51,7 @@ stages:
         TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
 
 - stage: deploy_to_test
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Test'
@@ -71,7 +71,7 @@ stages:
           deploymentMethod: 'auto'
 
 - stage: wait_for_uat_approval
-  condition: and(always(), startsWith(variables['Build.SourceBranchName'], 'release/'))
+  condition: and(always(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
   pool: server
   jobs:
     - job: waitForApproval
@@ -86,7 +86,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_uat
-  condition: and(always(), startsWith(variables['Build.SourceBranchName'], 'release/'))
+  condition: and(always(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - UAT'
@@ -106,7 +106,7 @@ stages:
           deploymentMethod: 'auto'
 
 - stage: wait_for_prod_approval
-  condition: and(always(), eq(variables['Build.SourceBranchName'], 'master'))
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   pool: server
   jobs:
     - job: waitForApproval
@@ -121,7 +121,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_prod
-  condition: and(always(), eq(variables['Build.SourceBranchName'], 'master'))
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Prod'
