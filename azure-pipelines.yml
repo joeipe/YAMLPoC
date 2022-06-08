@@ -8,6 +8,7 @@ trigger:
     include:
     - refs/heads/master
     - development
+    - releases/*
 name: $(date:yyyyMMdd)$(rev:.r)
 stages:
 - stage: build
@@ -70,7 +71,7 @@ stages:
           deploymentMethod: 'auto'
 
 - stage: wait_for_uat_approval
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  condition: and(always(), includes(variables['Build.SourceBranchName'], 'releases/'))
   pool: server
   jobs:
     - job: waitForApproval
@@ -85,7 +86,7 @@ stages:
           onTimeout: reject
 
 - stage: deploy_to_uat
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  condition: and(always(), includes(variables['Build.SourceBranchName'], 'releases/'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - UAT'
