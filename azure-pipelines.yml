@@ -105,7 +105,7 @@ stages:
           deploymentMethod: 'auto'
 
 - stage: wait_for_prod_approval
-  condition: and(eq(variables['Build.SourceBranchName'], 'master'))
+  condition: and(always(), eq(variables['Build.SourceBranchName'], 'master'))
   pool: server
   jobs:
     - job: waitForApproval
