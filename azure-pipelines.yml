@@ -16,7 +16,7 @@ stages:
     - job: deployToAppService
       displayName: 'DeployToAppService - Prod'
       steps:
-      - script: "the branch is $['Build.SourceBranchName']"
+      - script: echo "the branch is $['Build.SourceBranchName']"
 - stage: build
   jobs:
   - job: Job_1
