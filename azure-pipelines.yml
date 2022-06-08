@@ -18,3 +18,15 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - script: echo "name is $(Build.SourceBranchName)"
+    - script: echo "name is $variables['Build.SourceBranchName']"
+    - script: echo "name is variables['Build.SourceBranchName']"
+
+- stage: Condition
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
+  jobs:
+  - job: Job_1
+    displayName: Agent job 1
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - script: echo "name is $(Build.SourceBranchName)"
