@@ -49,21 +49,21 @@ stages:
         PathtoPublish: $(build.artifactstagingdirectory)
         TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
 
-- stage: Check
+- stage: deploy_to_test
   jobs:
-  - job: Job_1
-    displayName: Agent job 1
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - script: echo "name is $(Build.SourceBranchName)"
-
-- stage: Condition
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'master'))
-  jobs:
-  - job: Job_1
-    displayName: Agent job 1
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - script: echo "name is $(Build.SourceBranchName)"
+    - job: deployToAppService
+      displayName: 'DeployToAppService - Test'
+      steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)'
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          appType: 'webApp'
+          appName: 'yamlpocapi-test'
+          package: '$(Pipeline.Workspace)/**/*.zip'
+          appSettings: '-ASPNETCORE_ENVIRONMENT "Test"'
+          deploymentMethod: 'auto'
