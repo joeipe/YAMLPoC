@@ -7,8 +7,8 @@ trigger:
   branches:
     include:
     - refs/heads/master
-    - development
-    - releases/*
+    - develop
+    - release/*
 name: $(date:yyyyMMdd)$(rev:.r)
 stages:
 - stage: build
@@ -51,7 +51,7 @@ stages:
         TargetPath: '\\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)'
 
 - stage: deploy_to_test
-  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'development'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'develop'))
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Test'
