@@ -11,7 +11,7 @@ trigger:
     - release/*
 name: $(date:yyyyMMdd)$(rev:.r)
 stages:
-- stage: build
+- stage: Test
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Prod'
