@@ -13,6 +13,12 @@ name: $(date:yyyyMMdd)$(rev:.r)
 stages:
 - stage: build
   jobs:
+    - job: deployToAppService
+      displayName: 'DeployToAppService - Prod'
+      steps:
+      - script: "the branch is $['Build.SourceBranchName']"
+- stage: build
+  jobs:
   - job: Job_1
     displayName: Agent job 1
     pool:
