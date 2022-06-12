@@ -44,6 +44,8 @@ namespace YAMLPoC.API.Controllers
         [HttpGet]
         public ActionResult GetConfig()
         {
+            using (_logger.BeginScope("GetConfig"))
+            _logger.LogInformation("This is a log message. This is an object: {User}", new { name = "Joe Ipe" });
             var list = new List<string>
             {
                 _config["ApiSettings"],
