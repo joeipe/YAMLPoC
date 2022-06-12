@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YAMLPoC.API.KeyVault;
 
 namespace YAMLPoC.API
 {
@@ -33,10 +35,18 @@ namespace YAMLPoC.API
         {
 
             services.AddControllers();
+
+            services.AddAzureClients(azureClientFactoryBuilder =>
+            {
+                azureClientFactoryBuilder.AddSecretClient(Configuration.GetSection("KeyVault"));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "YAMLPoC.API", Version = "v1" });
             });
+
+            services.AddSingleton<IKeyVaultManager, KeyVaultManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
