@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YAMLPoC.API.KeyVault;
 
 namespace YAMLPoC.API.Controllers
 {
@@ -19,13 +20,16 @@ namespace YAMLPoC.API.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IConfiguration _config;
+        private readonly IKeyVaultManager _secretManager;
 
         public WeatherForecastController(
             ILogger<WeatherForecastController> logger,
-            IConfiguration config)
+            IConfiguration config,
+            IKeyVaultManager secretManager)
         {
             _logger = logger;
             _config = config;
+            _secretManager = secretManager;
         }
 
         [HttpGet]
@@ -49,8 +53,22 @@ namespace YAMLPoC.API.Controllers
             var list = new List<string>
             {
                 _config["ApiSettings"],
-                "vault",
-                "deploy"
+                "vault"
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetVault()
+        {
+            using (_logger.BeginScope("GetVault"))
+            _logger.LogInformation("This is a log message. This is an object: {User}", new { name = "Joe Ipe" });
+
+            string secretValue = await _secretManager.GetSecret("SuperSecret");
+            var list = new List<string>
+            {
+                secretValue
             };
 
             return Ok(list);
