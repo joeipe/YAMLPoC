@@ -55,6 +55,10 @@ stages:
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Test'
+      variables:
+      - group: yamlpoc-test-variable-group
+      - name: ApiSuperSecret
+        value: $(SuperSecret)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
