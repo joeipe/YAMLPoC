@@ -12,7 +12,7 @@ trigger:
 name: $(date:yyyyMMdd)$(rev:.r)
 stages:
 
-- stage: vault-test
+- stage: vault_test
   condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
     - job: vaultTest
