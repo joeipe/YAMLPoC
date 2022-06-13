@@ -24,6 +24,9 @@ stages:
           KeyVaultName: 'yamlpocvault'
           SecretsFilter: '*'
           RunAsPreJob: false
+      - task: CmdLine@2
+        inputs:
+          script: 'echo $(SuperSecret)'
 
 - stage: build
   jobs:
