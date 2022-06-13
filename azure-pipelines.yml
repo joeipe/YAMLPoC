@@ -26,7 +26,12 @@ stages:
           RunAsPreJob: false
       - task: CmdLine@2
         inputs:
-          script: echo "$(SuperSecret)"
+          script: 'echo "$(SuperSecret) > secret.txt'
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'test'
+          Contents: 'secret.txt'
+          TargetFolder: '$(build.ArtifactStagingDirectory)'
 
 - stage: build
   jobs:
