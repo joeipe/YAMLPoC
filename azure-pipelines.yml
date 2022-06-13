@@ -31,3 +31,8 @@ stages:
         inputs:
           Contents: 'secret.txt'
           TargetFolder: '$(build.ArtifactStagingDirectory)'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
