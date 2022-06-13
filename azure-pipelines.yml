@@ -61,6 +61,12 @@ stages:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)'
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(57f4859b-8037-4106-ac17-61520b9de19b)'
+          KeyVaultName: 'yamlpocvault-test'
+          SecretsFilter: '*'
+          RunAsPreJob: false
       - task: AzureWebApp@1
         inputs:
           azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
