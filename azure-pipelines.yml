@@ -29,7 +29,6 @@ stages:
           script: 'echo $(SuperSecret) > secret.txt'
       - task: CopyFiles@2
         inputs:
-          SourceFolder: 'test'
           Contents: 'secret.txt'
           TargetFolder: '$(build.ArtifactStagingDirectory)'
 
