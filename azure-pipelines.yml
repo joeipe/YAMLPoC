@@ -65,6 +65,11 @@ stages:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)'
+      - task: FileTransform@1
+        inputs:
+          folderPath: '$(Pipeline.Workspace)/**/*.zip'
+          fileType: 'json'
+          targetFiles: '**/appsettings.Test.json'
       - task: AzureWebApp@1
         inputs:
           azureSubscription: 'Pay-As-You-Go(1)(57f4859b-8037-4106-ac17-61520b9de19b)'
