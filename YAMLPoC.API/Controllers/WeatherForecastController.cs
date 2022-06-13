@@ -53,7 +53,7 @@ namespace YAMLPoC.API.Controllers
             var list = new List<string>
             {
                 _config["ApiSettings"],
-                "vault"
+                _config["ApiSuperSecret"],
             };
 
             return Ok(list);
