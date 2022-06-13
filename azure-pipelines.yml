@@ -101,6 +101,8 @@ stages:
       displayName: 'DeployToAppService - UAT'
       variables:
       - group: yamlpoc-uat-variable-group
+      - name: ApiSuperSecret
+        value: $(SuperSecret)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
