@@ -143,12 +143,21 @@ stages:
   jobs:
     - job: deployToAppService
       displayName: 'DeployToAppService - Prod'
+      variables:
+      - group: yamlpoc-variable-group
+      - name: ApiSuperSecret
+        value: $(SuperSecret)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)'
+      - task: FileTransform@1
+        inputs:
+          folderPath: '$(Pipeline.Workspace)/**/*.zip'
+          fileType: 'json'
+          targetFiles: '**/appsettings.Production.json'
       - task: AzureWebApp@1
         inputs:
           azureSubscription: 'Pay-As-You-Go(2)(57f4859b-8037-4106-ac17-61520b9de19b)'
