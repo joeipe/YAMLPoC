@@ -11,6 +11,24 @@ trigger:
     - refs/heads/release/*
 name: $(date:yyyyMMdd)$(rev:.r)
 stages:
+
+- stage: vault-test
+  condition: and(always(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+    - job: vaultTest
+      displayName: 'VaultTest - Prod'
+      steps:
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'Pay-As-You-Go(4)(57f4859b-8037-4106-ac17-61520b9de19b)'
+          KeyVaultName: 'yamlpocvault'
+          SecretsFilter: '*'
+          RunAsPreJob: false
+      - task: CmdLine@2
+        inputs:
+          script: |
+            echo $(SuperSecret)
+
 - stage: build
   jobs:
   - job: Job_1
