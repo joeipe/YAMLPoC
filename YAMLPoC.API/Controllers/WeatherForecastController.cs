@@ -52,8 +52,9 @@ namespace YAMLPoC.API.Controllers
             _logger.LogInformation("This is a log message. This is an object: {User}", new { name = "Joe Ipe" });
             var list = new List<string>
             {
-                _config["ApiSettings"],
-                _config["ApiSuperSecret"],
+                _config["ApiSettings:FromConfig"],
+                _config["ApiSettings:FromLibrary"],
+                _config["ApiSettings:FromVault"],
             };
 
             return Ok(list);
