@@ -109,10 +109,10 @@ stages:
       displayName: 'DeployToAppService - UAT'
       variables:
       - group: yamlpoc-uat-variable-group
-      - name: ApiSuperSecret
-        value: $(SuperSecret)
-      - name: ApiSettings
-        value: $(Settings)
+      - name: ApiSettings.FromLibrary
+        value: $(ApiSettingsFromLibrary)
+      - name: ApiSettings.FromVault
+        value: $(ApiSettingsFromVault)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -161,10 +161,10 @@ stages:
       displayName: 'DeployToAppService - Prod'
       variables:
       - group: yamlpoc-variable-group
-      - name: ApiSuperSecret
-        value: $(SuperSecret)
-      - name: ApiSettings
-        value: $(Settings)
+      - name: ApiSettings.FromLibrary
+        value: $(ApiSettingsFromLibrary)
+      - name: ApiSettings.FromVault
+        value: $(ApiSettingsFromVault)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
