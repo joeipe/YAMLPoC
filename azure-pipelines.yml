@@ -59,6 +59,8 @@ stages:
       - group: yamlpoc-test-variable-group
       - name: ApiSuperSecret
         value: $(SuperSecret)
+      - name: ApiSettings
+        value: $(Settings)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
