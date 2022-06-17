@@ -66,7 +66,7 @@ namespace YAMLPoC.API.Controllers
             using (_logger.BeginScope("GetVault"))
             _logger.LogInformation("This is a log message. This is an object: {User}", new { name = "Joe Ipe" });
 
-            string secretValue = await _secretManager.GetSecret("SuperSecret");
+            string secretValue = await _secretManager.GetSecret("ApiSettingsFromVault");
             var list = new List<string>
             {
                 secretValue
