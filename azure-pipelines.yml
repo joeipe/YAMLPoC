@@ -59,8 +59,8 @@ stages:
       - group: yamlpoc-test-variable-group
       - name: ApiSettings.FromLibrary
         value: $(ApiSettingsFromLibrary)
-      - name: ApiSettings
-        value: $(Settings)
+      - name: ApiSettings.FromVault
+        value: $(ApiSettingsFromVault)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
