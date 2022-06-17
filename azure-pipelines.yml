@@ -165,6 +165,10 @@ stages:
         value: $(ApiSettingsFromLibrary)
       - name: ApiSettings.FromVault
         value: $(ApiSettingsFromVault)
+      - name: Serilog.WriteTo.1.Args.authenticationId
+        value: $(SerilogAzureAnalyticsAuthenticationId)
+      - name: Serilog.WriteTo.1.Args.workspaceId
+        value: $(SerilogAzureAnalyticsWorkspaceId)
       steps:
       - task: DownloadPipelineArtifact@2
         inputs:
