@@ -5,4 +5,4 @@
 - YAML
 - Azure Vault
 - Devops Library
-- Logging
+- Logging (Azure Log Analytics)
